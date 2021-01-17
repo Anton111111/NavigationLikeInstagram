@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_navigation"
+    app:startDestination="@id/user_navigation_fragment">
+
+    <fragment
+        android:id="@+id/user_navigation_fragment"
+        android:name="com.anton111111.navigation.ui.app.UserNavigationFragment"
+        android:label="UserNavigationFragment"
+        tools:layout="@layout/user_navigation_fragment">
+        <action
+            android:id="@+id/action_user_to_payment"
+            app:destination="@id/payment_navigation" />
+    </fragment>
+
+    <include app:graph="@navigation/payment_navigation" />
+
+</navigation>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/guest_navigation"
+    app:startDestination="@id/auth_fragment">
+    <fragment
+        android:id="@+id/auth_fragment"
+        android:name="com.anton111111.navigation.ui.auth.AuthFragment"
+        android:label="AuthFragment"
+        tools:layout="@layout/auth_fragment">
+        <action
+            android:id="@+id/action_auth_to_user_navigation"
+            app:destination="@+id/user_navigation"
+            app:popUpTo="@id/auth_fragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_auth_to_payment"
+            app:destination="@id/payment_navigation" />
+        <argument
+            android:name="success_with_login"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="is_success"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
+
+    <include app:graph="@navigation/payment_navigation" />
+</navigation>

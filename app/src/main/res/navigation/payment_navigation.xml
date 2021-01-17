@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/payment_navigation"
+    app:startDestination="@id/payment_fragment">
+    <fragment
+        android:id="@+id/payment_fragment"
+        android:name="com.anton111111.navigation.ui.payment.PaymentFragment"
+        android:label="PaymentFragment"
+        tools:layout="@layout/payment_fragment">
+        <argument
+            android:name="success_with_login"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="is_success"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_payment_to_auth"
+            app:destination="@+id/auth_fragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/auth_fragment">
+            <argument
+                android:name="success_with_login"
+                android:defaultValue="false"
+                app:argType="boolean" />
+            <argument
+                android:name="is_success"
+                android:defaultValue="false"
+                app:argType="boolean" />
+        </action>
+        <action
+            android:id="@+id/action_payment_to_home"
+            app:destination="@+id/user_navigation"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/user_navigation" />
+        <action
+            android:id="@+id/action_payment_to_payment_second"
+            app:destination="@id/payment_second_fragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/payment_second_fragment"
+        android:name="com.anton111111.navigation.ui.payment.PaymentSecondFragment"
+        android:label="PaymentSecondFragment"
+        tools:layout="@layout/payment_second_fragment">
+        <action
+            android:id="@+id/action_payment_second_to_payment"
+            app:destination="@id/payment_fragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/payment_fragment" />
+    </fragment>
+</navigation>
