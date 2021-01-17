@@ -1,11 +1,14 @@
 package com.anton111111.navigation.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.anton111111.navigation.R
 import com.anton111111.navigation.databinding.HomeFragmentBinding
+import com.anton111111.navigation.ui.app.UserNavigationFragmentDirections
 
 class HomeFragment : Fragment(R.layout.home_fragment) {
 
@@ -26,8 +29,4 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.e("!!!!", "!!!!onResume: $this")
-    }
 }

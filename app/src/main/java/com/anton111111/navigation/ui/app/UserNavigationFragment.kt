@@ -1,13 +1,14 @@
 package com.anton111111.navigation.ui.app
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.anton111111.navigation.R
 import com.anton111111.navigation.databinding.UserNavigationFragmentBinding
+import com.anton111111.navigation.setupWithNavController
 
 class UserNavigationFragment : Fragment(R.layout.user_navigation_fragment) {
 
@@ -16,14 +17,12 @@ class UserNavigationFragment : Fragment(R.layout.user_navigation_fragment) {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        Log.e("!!!!!", "!!!!!onViewStateRestored: $savedInstanceState")
         if (savedInstanceState != null)
             setupBottomNavigationBar()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("!!!!!", "!!!!!onViewCreated: $savedInstanceState")
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
         }

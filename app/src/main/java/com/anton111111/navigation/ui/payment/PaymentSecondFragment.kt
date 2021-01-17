@@ -1,10 +1,10 @@
 package com.anton111111.navigation.ui.payment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.anton111111.navigation.R
 import com.anton111111.navigation.databinding.PaymentSecondFragmentBinding
 
@@ -45,8 +45,4 @@ class PaymentSecondFragment : Fragment(R.layout.payment_second_fragment) {
         )
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.e("!!!!", "!!!!onResume: $this")
-    }
 }

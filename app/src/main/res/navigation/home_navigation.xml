@@ -21,7 +21,7 @@
     <include app:graph="@navigation/payment_navigation" />
     <fragment
         android:id="@+id/home_fragment_second"
-        android:name="com.anton111111.navigation.ui.home.HomeFragmentSecond"
+        android:name="com.anton111111.navigation.ui.home.HomeSecondFragment"
         android:label="HomeSecondFragment"
         tools:layout="@layout/home_second_fragment" />
 

@@ -9,6 +9,15 @@
         android:id="@+id/search_fragment"
         android:name="com.anton111111.navigation.ui.search.SearchFragment"
         android:label="SearchFragment"
-        tools:layout="@layout/search_fragment" />
+        tools:layout="@layout/search_fragment">
+        <action
+            android:id="@+id/action_search_to_second"
+            app:destination="@id/search_second" />
+    </fragment>
+    <fragment
+        android:id="@+id/search_second"
+        android:name="com.anton111111.navigation.ui.search.SearchSecondFragment"
+        android:label="SearchSecondFragment"
+        tools:layout="@layout/search_second_fragment" />
 
 </navigation>
