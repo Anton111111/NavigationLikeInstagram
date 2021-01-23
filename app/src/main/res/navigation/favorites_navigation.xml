@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/favorites_navigation"
+    app:startDestination="@id/favorites_fragment">
+
+    <fragment
+        android:id="@+id/favorites_fragment"
+        android:name="com.anton111111.navigation.ui.favorites.FavoritesFragment"
+        android:label="FavoritesFragment"
+        tools:layout="@layout/favorites_fragment" />
+
+</navigation>

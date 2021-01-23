@@ -20,6 +20,7 @@ import android.util.SparseArray
 import androidx.core.util.containsKey
 import androidx.core.util.set
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
@@ -30,6 +31,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
  * Manages the various graphs needed for a [BottomNavigationView].
  * Got from https://github.com/android/architecture-components-samples/tree/master/NavigationAdvancedSample
  * and reworked
+ */
+/**
+ * @TODO Since the first fragment does not have a tag by default, it always remains at the beginning of the back stack. Need to find a solution so that the first fragment leaves the back stack as soon as it enters the back stack with the added tag. For example, for path A(the first)->B->C->A back stack should be as follows <-C<-B<-exit
  */
 fun BottomNavigationView.setupWithNavController(
     navGraphIds: List<Int>,
@@ -70,7 +74,7 @@ fun BottomNavigationView.setupWithNavController(
         if (this.selectedItemId == graphId) {
             // Update livedata with the selected graph
             selectedNavController.value = navHostFragment.navController
-            attachNavHostFragment(fragmentManager, navHostFragment, index == 0)
+            attachNavHostFragment(fragmentManager, navHostFragment, index == 0, fragmentTag)
         } else {
             detachNavHostFragment(fragmentManager, navHostFragment)
         }
@@ -105,18 +109,40 @@ fun BottomNavigationView.setupWithNavController(
 
                 //Check if we need pop back stack ot add to back stack.
                 when {
-                    //If the newly already on back stack then back to it.
-                    fragmentManager.isOnBackStack(newlySelectedItemTag) -> {
-                        fragmentManager.popBackStack(newlySelectedItemTag, 0)
-                    }
-                    //If need back to home pop everything from back stack
-                    newlySelectedItemTag == firstFragmentTag -> {
-                        val firstEntryInStack = if (fragmentManager.backStackEntryCount > 0)
-                            fragmentManager.getBackStackEntryAt(0).name else null
-                        fragmentManager.popBackStack(
-                            firstEntryInStack,
-                            FragmentManager.POP_BACK_STACK_INCLUSIVE
-                        )
+                    //If the newly already on back stack or is first fragment then clear back stack
+                    //upper the newly (included the newly) and restore back stack with the newly on up.
+                    fragmentManager.isOnBackStack(newlySelectedItemTag) || newlySelectedItemTag == firstFragmentTag -> {
+                        val tagsForRestoreBackstack: MutableList<String> = mutableListOf()
+                        var tagForDetach: String? = firstFragmentTag
+                        for (i in fragmentManager.backStackEntryCount - 1 downTo 0) {
+                            val backStackEntry = fragmentManager.getBackStackEntryAt(i)
+                            if (backStackEntry.name == newlySelectedItemTag) {
+                                if (i > 0)
+                                    tagForDetach = fragmentManager.getBackStackEntryAt(i - 1).name
+                                break
+                            }
+                            backStackEntry.name?.let { tagsForRestoreBackstack.add(it) }
+                        }
+                        tagsForRestoreBackstack.reverse()
+                        tagsForRestoreBackstack.add(newlySelectedItemTag)
+                        val backToTag = when {
+                            fragmentManager.isOnBackStack(newlySelectedItemTag) -> newlySelectedItemTag
+                            fragmentManager.backStackEntryCount > 0 -> fragmentManager.getBackStackEntryAt(
+                                0
+                            ).name
+                            else -> null
+                        }
+                        fragmentManager.popBackStack(backToTag, POP_BACK_STACK_INCLUSIVE)
+                        tagsForRestoreBackstack.forEach { tag ->
+                            fragmentManager.beginTransaction()
+                                .attach(fragmentManager.findFragmentByTag(tag)!!)
+                                .setPrimaryNavigationFragment(fragmentManager.findFragmentByTag(tag)!!)
+                                .detach(fragmentManager.findFragmentByTag(tagForDetach)!!)
+                                .addToBackStack(tag)
+                                .setReorderingAllowed(true)
+                                .commit()
+                            tagForDetach = tag
+                        }
                     }
                     //Else add to back stack
                     else -> {
@@ -228,7 +254,8 @@ private fun detachNavHostFragment(
 private fun attachNavHostFragment(
     fragmentManager: FragmentManager,
     navHostFragment: NavHostFragment,
-    isPrimaryNavFragment: Boolean
+    isPrimaryNavFragment: Boolean,
+    fragmentTag: String
 ) {
     fragmentManager.beginTransaction()
         .attach(navHostFragment)
