@@ -33,6 +33,7 @@ class UserNavigationFragment : Fragment(R.layout.user_navigation_fragment) {
             navGraphIds = listOf(
                 R.navigation.home_navigation,
                 R.navigation.search_navigation,
+                R.navigation.favorites_navigation,
                 R.navigation.profile_navigation
             ),
             fragmentManager = childFragmentManager,
