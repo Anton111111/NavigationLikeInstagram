@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
- * @TODO test with Don't keep activities
  * @TODO add ui tests
  */
 class AppActivity : AppCompatActivity(R.layout.app_activity) {
