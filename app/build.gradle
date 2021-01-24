@@ -10,7 +10,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.anton111111.navigationflow"
+        applicationId "com.anton111111.navigation"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

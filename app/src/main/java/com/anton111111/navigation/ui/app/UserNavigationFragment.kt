@@ -37,7 +37,7 @@ class UserNavigationFragment : Fragment(R.layout.user_navigation_fragment) {
                 R.navigation.profile_navigation
             ),
             fragmentManager = childFragmentManager,
-            containerId = viewBinding.bottomNavigationNavHost.id,
+            containerId = viewBinding.navHost.id,
             intent = requireActivity().intent
         )
     }
