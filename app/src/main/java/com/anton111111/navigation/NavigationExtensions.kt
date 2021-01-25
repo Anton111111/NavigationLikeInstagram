@@ -16,7 +16,6 @@
 package com.anton111111.navigation
 
 import android.content.Intent
-import android.util.Log
 import android.util.SparseArray
 import androidx.core.util.containsKey
 import androidx.core.util.set
@@ -75,7 +74,7 @@ fun BottomNavigationView.setupWithNavController(
         if (this.selectedItemId == graphId) {
             // Update livedata with the selected graph
             selectedNavController.value = navHostFragment.navController
-            attachNavHostFragment(fragmentManager, navHostFragment, index == 0)
+            attachNavHostFragment(fragmentManager, navHostFragment, index == 0, fragmentTag)
         } else {
             detachNavHostFragment(fragmentManager, navHostFragment)
         }
@@ -93,7 +92,6 @@ fun BottomNavigationView.setupWithNavController(
         } else {
             val newlySelectedItemTag = graphIdToTagMap[item.itemId]
             if (selectedItemTag != newlySelectedItemTag) {
-                Log.e("!!!!", "!!!!!$selectedItemTag != $newlySelectedItemTag")
                 //Check if fragment already shown
                 fragmentManager.currentNavHostFragmentTag(graphIdToTagMap)?.run {
                     if (this == newlySelectedItemTag) {
@@ -129,22 +127,18 @@ fun BottomNavigationView.setupWithNavController(
                         tagsForRestoreBackstack.add(newlySelectedItemTag)
                         val backToTag = when {
                             fragmentManager.isOnBackStack(newlySelectedItemTag) -> newlySelectedItemTag
-                            fragmentManager.backStackEntryCount > 0 ->
-                                fragmentManager.getBackStackEntryAt(0).name
+                            fragmentManager.backStackEntryCount > 0 -> fragmentManager.getBackStackEntryAt(
+                                0
+                            ).name
                             else -> null
                         }
                         fragmentManager.popBackStack(backToTag, POP_BACK_STACK_INCLUSIVE)
                         tagsForRestoreBackstack.forEach { tag ->
-                            val forAttach = fragmentManager.findFragmentByTag(tag)!!
                             fragmentManager.beginTransaction()
-                                .attach(forAttach)
-                                .setPrimaryNavigationFragment(forAttach)
-                                .apply {
-                                    if (tagForDetach != tag)
-                                        detach(fragmentManager.findFragmentByTag(tagForDetach)!!)
-                                }
-                                //Do not add to back stack first fragment because it always here
-                                .apply { if (tag != firstFragmentTag) addToBackStack(tag) }
+                                .attach(fragmentManager.findFragmentByTag(tag)!!)
+                                .setPrimaryNavigationFragment(fragmentManager.findFragmentByTag(tag)!!)
+                                .detach(fragmentManager.findFragmentByTag(tagForDetach)!!)
+                                .addToBackStack(tag)
                                 .setReorderingAllowed(true)
                                 .commit()
                             tagForDetach = tag
@@ -183,6 +177,7 @@ fun BottomNavigationView.setupWithNavController(
             if (selectedItemId != navController.graph.id)
                 selectedItemId = navController.graph.id
         }
+
         // Reset the graph if the currentDestination is not valid (happens when the back
         // stack is popped after using the back button).
         selectedNavController.value?.let { controller ->
@@ -259,7 +254,8 @@ private fun detachNavHostFragment(
 private fun attachNavHostFragment(
     fragmentManager: FragmentManager,
     navHostFragment: NavHostFragment,
-    isPrimaryNavFragment: Boolean
+    isPrimaryNavFragment: Boolean,
+    fragmentTag: String
 ) {
     fragmentManager.beginTransaction()
         .attach(navHostFragment)
