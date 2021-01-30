@@ -9,11 +9,12 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.anton111111.navigation.R
 import com.anton111111.navigation.databinding.UserNavigationFragmentBinding
 import com.anton111111.navigation.setupWithNavController
+import kotlinx.coroutines.flow.StateFlow
 
 class UserNavigationFragment : Fragment(R.layout.user_navigation_fragment) {
 
     private val viewBinding: UserNavigationFragmentBinding by viewBinding()
-    private var currentNavController: LiveData<NavController>? = null
+    private lateinit var currentNavController: StateFlow<NavController?>
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
