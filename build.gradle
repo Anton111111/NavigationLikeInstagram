@@ -5,13 +5,14 @@ buildscript {
     ext.lifecycle_version = "2.2.0"
     ext.koin_version = "2.2.1"
     ext.nav_version = "2.3.2"
-    ext.vbpd_version = "1.4.0"
+    ext.vbpd_version = "1.4.1"
+    ext.espresso_version = "3.3.0"
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.1"
+        classpath "com.android.tools.build:gradle:4.1.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         // NOTE: Do not place your application dependencies here; they belong
