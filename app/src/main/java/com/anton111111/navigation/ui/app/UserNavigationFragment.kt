@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 class UserNavigationFragment : Fragment(R.layout.user_navigation_fragment) {
 
     private val viewBinding: UserNavigationFragmentBinding by viewBinding()
-    private var currentNavController: StateFlow<NavController?>? = null
+    private lateinit var currentNavController: StateFlow<NavController?>
 
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
