@@ -35,7 +35,8 @@
             android:id="@+id/action_payment_to_home"
             app:destination="@+id/user_navigation"
             app:launchSingleTop="true"
-            app:popUpTo="@+id/user_navigation" />
+            app:popUpTo="@+id/main_navigation"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_payment_to_payment_second"
             app:destination="@id/payment_second_fragment" />
