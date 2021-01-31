@@ -6,16 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ui.payment.PaymentFragment">
 
-    <Button
-        android:id="@+id/second_payment_screen_btn"
+    <TextView
+        android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="To Second Payment"
+        android:text="@string/payment_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/second_payment_screen_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To Second Payment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@
     <string name="search_second_text">This is search second screen</string>>
     <string name="favorites_text">This is favorites</string>>
     <string name="profile_text">This is profile</string>>
+    <string name="payment_text">This is payment</string>>
 
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_search">Search</string>
