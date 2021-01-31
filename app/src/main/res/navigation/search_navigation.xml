@@ -12,10 +12,10 @@
         tools:layout="@layout/search_fragment">
         <action
             android:id="@+id/action_search_to_second"
-            app:destination="@id/search_second" />
+            app:destination="@id/search_second_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/search_second"
+        android:id="@+id/search_second_fragment"
         android:name="com.anton111111.navigation.ui.search.SearchSecondFragment"
         android:label="SearchSecondFragment"
         tools:layout="@layout/search_second_fragment" />

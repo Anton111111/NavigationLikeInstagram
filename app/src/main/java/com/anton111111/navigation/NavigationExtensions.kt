@@ -16,6 +16,7 @@
 package com.anton111111.navigation
 
 import android.content.Intent
+import android.util.Log
 import android.util.SparseArray
 import androidx.core.util.containsKey
 import androidx.core.util.set
@@ -70,7 +71,7 @@ fun BottomNavigationView.setupWithNavController(
 
         // Save to the map
         graphIdToTagMap[graphId] = fragmentTag
-
+Log.e("!!!!","!!!!!Graphid: $graphId tag: $fragmentTag")
         // Attach or detach nav host fragment depending on whether it's the selected item.
         if (this.selectedItemId == graphId) {
             // Update livedata with the selected graph
@@ -150,6 +151,7 @@ fun BottomNavigationView.setupWithNavController(
                                 }
                                 .setReorderingAllowed(true)
                                 .commit()
+                            Log.e("!!!!","!!!!!setPrimary $forAttach")
                             tagForDetach = tag
                         }
                     }

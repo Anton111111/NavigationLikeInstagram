@@ -10,11 +10,14 @@ import com.anton111111.navigation.R
 import com.anton111111.navigation.databinding.UserNavigationFragmentBinding
 import com.anton111111.navigation.setupWithNavController
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class UserNavigationFragment : Fragment(R.layout.user_navigation_fragment) {
 
     private val viewBinding: UserNavigationFragmentBinding by viewBinding()
     private lateinit var currentNavController: StateFlow<NavController?>
+    private val bottomNavViewModel: BottomNavigationSharedViewModel by sharedViewModel()
 
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -26,11 +29,33 @@ class UserNavigationFragment : Fragment(R.layout.user_navigation_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         if (savedInstanceState == null)
             setupBottomNavigationBar()
+
+        observeNavActions()
+    }
+
+    private fun observeNavActions() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            bottomNavViewModel.bottomNavActionSharedState.collect { action ->
+                with(viewBinding.bottomNav) {
+                    if (selectedItemId != action.bottomNavItemId) {
+                        selectedItemId = action.bottomNavItemId
+                        //Wait until finish all fragment manager transactions
+                        childFragmentManager.executePendingTransactions()
+                    }
+                    action.destinationId?.let { destId ->
+                        currentNavController.value?.navigate(destId)
+                    }
+                }
+            }
+        }
+
     }
 
     private fun setupBottomNavigationBar() {
+        //Call in launchWhenStarted to avoid case when bottom nav view is not restored yet
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             currentNavController = viewBinding.bottomNav.setupWithNavController(
                 navGraphIds = listOf(
@@ -44,8 +69,6 @@ class UserNavigationFragment : Fragment(R.layout.user_navigation_fragment) {
                 intent = requireActivity().intent
             )
         }
-
     }
-
 
 }
