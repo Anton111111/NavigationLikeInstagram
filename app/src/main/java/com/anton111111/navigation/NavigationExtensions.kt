@@ -44,7 +44,7 @@ fun BottomNavigationView.setupWithNavController(
 ): StateFlow<NavController?> {
     // Map of tags
     val graphIdToTagMap = SparseArray<String>()
-    // Result. Mutable live data with the selected controlled
+    // Result. Mutable state flow with the selected controlled
     val selectedNavController = MutableStateFlow<NavController?>(null)
 
     var firstFragmentGraphId = 0
@@ -72,7 +72,7 @@ fun BottomNavigationView.setupWithNavController(
         graphIdToTagMap[graphId] = fragmentTag
         // Attach or detach nav host fragment depending on whether it's the selected item.
         if (this.selectedItemId == graphId) {
-            // Update livedata with the selected graph
+            // Update state flow with the selected graph
             selectedNavController.value = navHostFragment.navController
             attachNavHostFragment(fragmentManager, navHostFragment, index == 0)
         } else {
