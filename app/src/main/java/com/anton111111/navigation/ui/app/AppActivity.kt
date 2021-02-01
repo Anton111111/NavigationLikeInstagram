@@ -36,7 +36,7 @@ class AppActivity : AppCompatActivity(R.layout.app_activity) {
             } else {
                 Toast.makeText(
                     applicationContext,
-                    "Please click BACK again to exit.", Toast.LENGTH_SHORT
+                    getString(R.string.click_back_again), Toast.LENGTH_SHORT
                 ).show()
                 backPressedOnce.set(true)
                 lifecycleScope.launch {

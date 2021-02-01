@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.asStateFlow
  * @TODO Since the first fragment does not have a tag by default, it always remains at the beginning of the back stack. Need to find a solution so that the first fragment leaves the back stack as soon as it enters the back stack with the added tag. For example, for path A(the first)->B->C->A back stack should be as follows <-C<-B<-exit
  */
 fun BottomNavigationView.setupWithNavController(
-    navGraphIds: List<Int>,
+    navGraphIds: List<Pair<Int, Int>>,//Pair<id,navigation>
     fragmentManager: FragmentManager,
     containerId: Int,
     intent: Intent
@@ -47,34 +47,36 @@ fun BottomNavigationView.setupWithNavController(
     // Result. Mutable state flow with the selected controlled
     val selectedNavController = MutableStateFlow<NavController?>(null)
 
-    var firstFragmentGraphId = 0
-
-    // First create a NavHostFragment for each NavGraph ID
-    navGraphIds.forEachIndexed { index, navGraphId ->
+    val firstFragmentGraphId = navGraphIds[0].first
+    // Prepare graph map
+    navGraphIds.forEachIndexed { index, nav ->
         val fragmentTag = getFragmentTag(index)
+        graphIdToTagMap[nav.first] = fragmentTag
+    }
 
+    //Create a NavHostFragment for each NavGraph ID and attach or detach it.
+    //Reorder navGraphIds so that the selected graph will be last item in the list.
+    // This is required to attach will be called last. If attach was not last
+    // we will got crash on destroy parent NavHostFragment.
+    val navGraphIdsReordered = navGraphIds.filter { it.first != selectedItemId } +
+            navGraphIds.filter { it.first == selectedItemId }
+    navGraphIdsReordered.forEachIndexed { index, nav ->
         // Find or create the Navigation host fragment
         val navHostFragment = obtainNavHostFragment(
             fragmentManager,
-            fragmentTag,
-            navGraphId,
+            graphIdToTagMap[nav.first],
+            nav.second,
             containerId
         )
-
-        // Obtain its id
-        val graphId = navHostFragment.navController.graph.id
-
-        if (index == 0) {
-            firstFragmentGraphId = graphId
-        }
-
-        // Save to the map
-        graphIdToTagMap[graphId] = fragmentTag
-        // Attach or detach nav host fragment depending on whether it's the selected item.
-        if (this.selectedItemId == graphId) {
+        //Detach all nav host fragments exclude of the last. Last will be attached.
+        if (index == navGraphIdsReordered.lastIndex) {
             // Update state flow with the selected graph
             selectedNavController.value = navHostFragment.navController
-            attachNavHostFragment(fragmentManager, navHostFragment, index == 0)
+            attachNavHostFragment(
+                fragmentManager,
+                navHostFragment,
+                firstFragmentGraphId == nav.first
+            )
         } else {
             detachNavHostFragment(fragmentManager, navHostFragment)
         }
@@ -177,7 +179,7 @@ fun BottomNavigationView.setupWithNavController(
     setupItemReselected(graphIdToTagMap, fragmentManager)
 
     // Handle deep link
-    setupDeepLinks(navGraphIds, fragmentManager, containerId, intent)
+    setupDeepLinks(navGraphIds.map { it.second }, fragmentManager, containerId, intent)
 
     // Finally, ensure that we update our BottomNavigationView when the back stack changes
     fragmentManager.addOnBackStackChangedListener {
@@ -279,6 +281,7 @@ private fun obtainNavHostFragment(
     navGraphId: Int,
     containerId: Int
 ): NavHostFragment {
+
     // If the Nav Host fragment exists, return it
     val existingFragment = fragmentManager.findFragmentByTag(fragmentTag) as NavHostFragment?
     existingFragment?.let { return it }

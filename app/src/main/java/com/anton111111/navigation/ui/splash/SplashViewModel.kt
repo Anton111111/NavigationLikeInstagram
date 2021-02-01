@@ -17,7 +17,7 @@ class SplashViewModel(private val prefs: SharedPreferences) : ViewModel() {
     init {
         //Emulate long request
         viewModelScope.launch {
-            delay(2000)
+            delay(1000)
             _isHasUser.value = prefs.getBoolean(IS_HAS_USER_FIELD, false)
         }
     }

@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">Navigation like Instagram</string>
-    <string name="home_text">This is home</string>>
-    <string name="home_second_text">This is home second screen</string>>
-    <string name="search_text">This is search</string>>
-    <string name="search_second_text">This is search second screen</string>>
-    <string name="favorites_text">This is favorites</string>>
-    <string name="profile_text">This is profile</string>>
-    <string name="payment_text">This is payment</string>>
+    <string name="home_text">This is home</string>
+    <string name="home_second_text">This is home second screen</string>
+    <string name="search_text">This is search</string>
+    <string name="search_second_text">This is search second screen</string>
+    <string name="favorites_text">This is favorites</string>
+    <string name="profile_text">This is profile</string>
+    <string name="payment_text">This is payment</string>
+    <string name="click_back_again">Please click BACK again to exit.</string>
 
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_search">Search</string>

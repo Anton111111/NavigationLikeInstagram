@@ -22,9 +22,9 @@ class UserNavigationFragment : Fragment(R.layout.user_navigation_fragment) {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
             setupBottomNavigationBar()
-        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,10 +59,10 @@ class UserNavigationFragment : Fragment(R.layout.user_navigation_fragment) {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             currentNavController = viewBinding.bottomNav.setupWithNavController(
                 navGraphIds = listOf(
-                    R.navigation.home_navigation,
-                    R.navigation.search_navigation,
-                    R.navigation.favorites_navigation,
-                    R.navigation.profile_navigation
+                    Pair(R.id.home_navigation, R.navigation.home_navigation),
+                    Pair(R.id.search_navigation, R.navigation.search_navigation),
+                    Pair(R.id.favorites_navigation, R.navigation.favorites_navigation),
+                    Pair(R.id.profile_navigation, R.navigation.profile_navigation)
                 ),
                 fragmentManager = childFragmentManager,
                 containerId = viewBinding.navHost.id,
